@@ -1,27 +1,30 @@
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import styles from "./page.module.css";
 
 export default function LandingPage() {
+  const { t } = useTranslation("common");
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         {/* Hero Section */}
         <section className="flex flex-col items-center justify-center text-center py-20 px-6">
           <h1 className="text-4xl font-bold text-primary mb-4">
-            Empower Your Business Journey
+            {t("welcome")}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
-            Simplify your business setup with our holistic assistant. From legal to marketing, we've got you covered.
+            {t("description")}
           </p>
           <div className="mt-6 flex gap-4">
             <Link href="/get-started">
               <button className="px-6 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
-                Get Started
+                {t("getStarted")}
               </button>
             </Link>
             <Link href="/learn-more">
               <button className="px-6 py-3 border border-border text-muted-foreground rounded-md hover:bg-muted">
-                Learn More
+                {t("learnMore")}
               </button>
             </Link>
           </div>
