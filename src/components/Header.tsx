@@ -1,19 +1,51 @@
-import React from 'react';
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+import Link from "next/link";
 
-const Header: React.FC = () => {
-    return (
-        <header>
-            <h1>Business Assistant App</h1>
-            <nav>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/services">Services</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
-    );
-};
+export default function Header() {
+  return (
+    <header className="flex justify-between items-center px-6 py-4 bg-background border-b border-border shadow-sm">
+      {/* Logo */}
+      <div className="text-xl font-bold text-primary">
+        <Link href="/">Tangan Kanan</Link>
+      </div>
 
-export default Header;
+      {/* Navigation */}
+      <nav className="hidden md:flex gap-6">
+        <Link href="/features" className="text-muted-foreground hover:text-primary">
+          Features
+        </Link>
+        <Link href="/pricing" className="text-muted-foreground hover:text-primary">
+          Pricing
+        </Link>
+        <Link href="/about" className="text-muted-foreground hover:text-primary">
+          About
+        </Link>
+      </nav>
+
+      {/* Authentication Buttons */}
+      <div className="flex items-center gap-4">
+        <SignedOut>
+          <SignInButton>
+            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
+              Sign In
+            </button>
+          </SignInButton>
+          <SignUpButton>
+            <button className="px-4 py-2 border border-border text-muted-foreground rounded-md hover:bg-muted">
+              Sign Up
+            </button>
+          </SignUpButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
+      </div>
+    </header>
+  );
+}
