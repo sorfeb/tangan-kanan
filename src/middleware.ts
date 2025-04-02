@@ -1,52 +1,44 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
-import { NextResponse, NextRequest } from 'next/server';
+import { authMiddleware } from '@clerk/nextjs';
+import { NextResponse } from 'next/server';
 import { locales, defaultLocale } from './i18n/config';
 
-export default function middleware(request: NextRequest) {
-  // Check if the path should skip certain middleware
-  const path = request.nextUrl.pathname;
-  
-  // Apply language routing - run this first to handle redirects
-  const langResult = handleLanguageRouting(request);
-  if (langResult) return langResult;
-  
-  // Apply Clerk authentication
-  const clerkResult = clerkMiddleware()(request);
-  
-  // We need to resolve the response to work with it
-  return clerkResult.then(async (res) => {
-    if (res && res.status !== 200) return res;
-    
-    return res || NextResponse.next();
-  });
-}
+// Handle language routing first before authentication
+function handleLanguageRouting(req) {
+  const pathname = req.nextUrl.pathname;
 
-function handleLanguageRouting(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+  // Paths that should bypass language routing
+  if (
+    pathname.startsWith('/_next') || 
+    pathname.startsWith('/api/') ||
+    pathname.match(/\.(jpg|png|gif|svg|ico)$/)
+  ) {
+    return false; // Continue with normal middleware processing
+  }
 
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
-  if (pathnameHasLocale) return;
+  if (pathnameHasLocale) return false;
 
-  const preferredLocale = getPreferredLocale(request) || defaultLocale;
+  const preferredLocale = getPreferredLocale(req) || defaultLocale;
   
+  // Redirect to the localized path
   return NextResponse.redirect(
     new URL(
       `/${preferredLocale}${pathname.startsWith('/') ? pathname : `/${pathname}`}`,
-      request.url
+      req.url
     )
   );
 }
 
-function getPreferredLocale(request: NextRequest): string | undefined {
+function getPreferredLocale(request) {
   const acceptLanguage = request.headers.get('accept-language');
   if (acceptLanguage) {
     const parsedLocales = acceptLanguage.split(',').map(l => l.split(';')[0].trim());
     const matchedLocale = parsedLocales.find(l => {
       const language = l.toLowerCase().split('-')[0];
-      return locales.includes(language as any);
+      return locales.includes(language);
     });
     
     if (matchedLocale) {
@@ -57,11 +49,38 @@ function getPreferredLocale(request: NextRequest): string | undefined {
   return undefined;
 }
 
+// Use Clerk's authMiddleware with custom beforeAuth function for i18n
+export default authMiddleware({
+  // Handle language routing before authentication
+  beforeAuth: (req) => {
+    const langResult = handleLanguageRouting(req);
+    if (langResult) return langResult;
+    return NextResponse.next();
+  },
+  
+  // Public routes that don't require authentication
+  publicRoutes: [
+    '/',
+    '/sign-in',
+    '/sign-up',
+    '/api/webhook',
+    // Public routes with localization
+    '/:locale', 
+    '/:locale/features',
+    '/:locale/pricing',
+    '/:locale/about',
+    '/api/webhooks(.*)',
+    // Static assets
+    '/favicon.ico',
+    '/robots.txt',
+  ],
+});
+
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
-    '/(api|trpc)(.*)',
+    // Skip Next.js internals and all static files
+    '/((?!_next|.*\\.(.*)$).*)',
+    // Include all paths starting with /api
+    '/api/(.*)',
   ],
 };

@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
+import { Locale, getTranslations } from "@/i18n/config";
 import styles from "./page.module.css";
 
-export default function LandingPage() {
-  const { t } = useTranslation("common");
+export default async function LandingPage({
+  params: { lang },
+}: {
+  params: { lang: Locale };
+}) {
+  const t = await getTranslations(lang);
 
   return (
     <div className={styles.page}>

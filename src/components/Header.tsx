@@ -6,24 +6,25 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import { Locale } from "@/i18n/config";
 
-export default function Header() {
+export default function Header({ lang }: { lang: Locale }) {
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-background border-b border-border shadow-sm">
       {/* Logo */}
       <div className="text-xl font-bold text-primary">
-        <Link href="/">Tangan Kanan</Link>
+        <Link href={`/${lang}`}>Tangan Kanan</Link>
       </div>
 
       {/* Navigation */}
       <nav className="hidden md:flex gap-6">
-        <Link href="/features" className="text-muted-foreground hover:text-primary">
+        <Link href={`/${lang}/features`} className="text-muted-foreground hover:text-primary">
           Features
         </Link>
-        <Link href="/pricing" className="text-muted-foreground hover:text-primary">
+        <Link href={`/${lang}/pricing`} className="text-muted-foreground hover:text-primary">
           Pricing
         </Link>
-        <Link href="/about" className="text-muted-foreground hover:text-primary">
+        <Link href={`/${lang}/about`} className="text-muted-foreground hover:text-primary">
           About
         </Link>
       </nav>
