@@ -1,4 +1,13 @@
 {
   "welcome": "Welcome to Tangan Kanan",
-  "description": "Simplify your business setup with our holistic assistant."
+  "description": "Simplify your business setup with our holistic assistant.",
+  "getStarted": "Get Started",
+  "learnMore": "Learn More",
+  "features": "Features",
+  "legal": "Legal Assistance",
+  "legalDesc": "Get help with business registration, contracts, and compliance.",
+  "financial": "Financial Planning",
+  "financialDesc": "Manage your finances with budgeting tools and expert advice.",
+  "marketing": "Marketing Strategies",
+  "marketingDesc": "Boost your brand with tailored marketing plans and tools."
 }

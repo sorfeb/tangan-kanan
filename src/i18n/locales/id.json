@@ -1,4 +1,13 @@
 {
   "welcome": "Selamat datang di Tangan Kanan",
-  "description": "Permudah pengaturan bisnis Anda dengan asisten holistik kami."
+  "description": "Permudah pengaturan bisnis Anda dengan asisten holistik kami.",
+  "getStarted": "Mulai",
+  "learnMore": "Pelajari Lebih Lanjut",
+  "features": "Fitur",
+  "legal": "Bantuan Hukum",
+  "legalDesc": "Dapatkan bantuan untuk pendaftaran bisnis, kontrak, dan kepatuhan.",
+  "financial": "Perencanaan Keuangan",
+  "financialDesc": "Kelola keuangan Anda dengan alat anggaran dan saran ahli.",
+  "marketing": "Strategi Pemasaran",
+  "marketingDesc": "Tingkatkan merek Anda dengan rencana dan alat pemasaran yang disesuaikan."
 }

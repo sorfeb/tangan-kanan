@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Geist, Geist_Mono } from "next/font/google";
-import Header from "@/components/Header";
-import "./globals.css";
 import { Locale, defaultLocale } from '../i18n/config';
+import { Geist, Geist_Mono } from "next/font/google";
+
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +22,7 @@ export const metadata: Metadata = {
   title: "Tangan Kanan",
   description: "AI-powered business assistant for entrepreneurs",
   icons: {
-    icon: '/favicon.svg',
+    icon: '../favicon.svg',
   },
 };
 
@@ -36,8 +39,9 @@ function RootLayout({
     <ClerkProvider>
       <html lang={lang}>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <Header />
+          <Header lang={lang}/>
           {children}
+          <Footer />
         </body>
       </html>
     </ClerkProvider>
