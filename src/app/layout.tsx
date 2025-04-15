@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { TranslationProvider } from "@/context/TranslationProvider";
 import { Locale, defaultLocale } from '../i18n/config';
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -39,9 +40,11 @@ function RootLayout({
     <ClerkProvider>
       <html lang={lang}>
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <Header lang={lang}/>
-          {children}
-          <Footer />
+          <TranslationProvider initialLocale={lang}>
+            <Header />
+            {children}
+            <Footer />
+          </TranslationProvider>
         </body>
       </html>
     </ClerkProvider>

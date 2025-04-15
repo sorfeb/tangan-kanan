@@ -1,17 +1,11 @@
+'use client'
+
 import Link from "next/link";
-import { Locale, getTranslations } from "@/i18n/config";
+import { useTranslations } from "@/context/TranslationProvider";
 import styles from "./page.module.css";
 
-type Props = {
-  params: { lang: Locale };
-};
-
-export default async function LandingPage(
-  {params,
-}: Props) {
-
-  const { lang } = await Promise.resolve(params);
-  const translations = await getTranslations(lang);
+export default function LandingPage() {
+  const { translations, lang } = useTranslations();
 
   return (
     <div className={styles.page}>
@@ -25,12 +19,12 @@ export default async function LandingPage(
             {translations.description}
           </p>
           <div className="mt-6 flex gap-4">
-            <Link href="/get-started">
+            <Link href={`/${lang}/get-started`}>
               <button className="px-6 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
                 {translations.getStarted || "Get Started"}
               </button>
             </Link>
-            <Link href="/learn-more">
+            <Link href={`/${lang}/learn-more`}>
               <button className="px-6 py-3 border border-border text-muted-foreground rounded-md hover:bg-muted">
                 {translations.learnMore || "Learn More"}
               </button>
